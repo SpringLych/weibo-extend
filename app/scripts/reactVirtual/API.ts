@@ -171,6 +171,7 @@ export const fetchToGetBlog = async (props: { uid: string; since_id?: string; pa
     if (!uid) return { data, status }
 
     try {
+        // 微博的响应接口
         const response = await baseFetch({
             url: `//weibo.com/ajax/statuses/mymblog?uid=${uid}&page=${pageIndex}&feature=0${
                 since_id ? '&since_id=' + since_id : ''
@@ -190,6 +191,10 @@ export const fetchToGetBlog = async (props: { uid: string; since_id?: string; pa
     return { data, status }
 }
 
+/**
+ * 搜索微博。这里的实现少几个过滤参数
+ * @param props
+ */
 export const fetchToSearchProfile = async (props: {
     uid: string
     startTimeShortSpan?: number

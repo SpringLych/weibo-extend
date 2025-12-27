@@ -316,10 +316,13 @@ export const saveWeiboQueue = createAsyncThunk(
                 : await fetchToGetBlog({ uid: otherUid, pageIndex })
             pageIndex++
             const { list, hasMore, total } = blogsResp?.data || {}
+            // 仅保留 mblog_vip_type 为 1 的微博（即仅 VIP 可看）
+            const filteredList = (list || []).filter((item: any) => item.mblog_vip_type === 1)
+
             totalCountSaveingWeibo = total || totalCountSaveingWeibo
             dispatch(updateState({ totalCountSaveingWeibo }))
-            count += list?.length || 0
-            onePageList = onePageList.concat(list)
+            count += filteredList?.length || 0
+            onePageList = onePageList.concat(filteredList)
             isEnd = !hasMore
             if (!hasMore) break
         }

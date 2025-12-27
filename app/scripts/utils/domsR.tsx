@@ -8,6 +8,7 @@ import { weiboExtendVirtualRootId } from './constants'
 interface IShowUserListRProps {
     userList: UserType[]
 }
+// @ts-ignore
 export const ShowUserListR: React.FC<IShowUserListRProps> = ({ userList }) => {
     if (_.isEmpty(userList)) return
     const handleUserClick = (userInfo: UserType) => {

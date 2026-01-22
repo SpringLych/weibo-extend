@@ -55,7 +55,7 @@ const fetchfetchToGetLikeUsersByPage = async ({
         const result = await response.json()
         const { html, page, like_counts } = result?.data || {}
         likeUsersHtml = html
-        ;(totalPage = page?.totalpage), (likeCounts = like_counts)
+        ;((totalPage = page?.totalpage), (likeCounts = like_counts))
         hasMore = totalPage > pageId
 
         if (likeUsersHtml) {

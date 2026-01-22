@@ -1,8 +1,8 @@
 import _ from 'lodash'
 // @ts-ignore
 import $ from 'jquery'
-// @ts-ignore
-import myblog from './myblog.json'
+// myblog 是通过 HTML 中的 script 标签作为全局变量加载的
+declare const myblog: any
 import dayjs from 'dayjs'
 
 const postContainerClass = `w-full flex flex-col gap-6 break-words pb-10`
@@ -28,26 +28,26 @@ const weiboBaseUrl = `https://weibo.com`
 
 const assetsPath = "./assets"
 
-const start=async ()=>{
+const start = async () => {
     console.log(`start`, start)
     console.log(myblog)
     const user = myblog.user || {}
     const list = myblog.list || []
 
     let isLoaded = false;
-    $(document).ready(function(){
-        if(isLoaded) return;
+    $(document).ready(function () {
+        if (isLoaded) return;
         isLoaded = true;
         const $body = $(document.body);
         const $weiboExtendPosts = $body.find("#weibo-extend-posts")
         const $postsContainer = $("<div>").attr("id", "#weibo-extend-post-container").addClass(postContainerClass)
-        appendUserInfo({$container: $weiboExtendPosts, userInfo: user})
+        appendUserInfo({ $container: $weiboExtendPosts, userInfo: user })
         $weiboExtendPosts.append($postsContainer)
-        _.each(list, item=>{
-            const { text, text_raw, picShows, region_name, source, created_at, retweetedBlog} = item || {}
-            const $post = appendBlog({$container: $postsContainer, blogItem: item, postClass: postClass})
-            if(!_.isEmpty(retweetedBlog)){
-                appendBlog({$container: $post, blogItem:retweetedBlog, postClass: retweetPostClass})
+        _.each(list, item => {
+            const { text, text_raw, picShows, region_name, source, created_at, retweetedBlog } = item || {}
+            const $post = appendBlog({ $container: $postsContainer, blogItem: item, postClass: postClass })
+            if (!_.isEmpty(retweetedBlog)) {
+                appendBlog({ $container: $post, blogItem: retweetedBlog, postClass: retweetPostClass })
             }
         })
     })
@@ -55,13 +55,13 @@ const start=async ()=>{
 
 start()
 
-const appendUserInfo = ({$container, userInfo}: Record<string, any>)=>{
-    if(_.isEmpty(userInfo)) return;
+const appendUserInfo = ({ $container, userInfo }: Record<string, any>) => {
+    if (_.isEmpty(userInfo)) return;
     const { picShow, screen_name, profile_url, idstr } = userInfo || {}
-    if(screen_name){
+    if (screen_name) {
         document.title = screen_name;
     }
-    
+
     const $userInfoContainer = $("<div>").addClass(userInfoContainerClass);
     const $userImageContainerDiv = $("<div>").addClass(userImageContainerClass)
     const $userImage = $("<img>").addClass(userImageClass).attr("src", `${assetsPath}/image/${picShow}`)
@@ -69,9 +69,9 @@ const appendUserInfo = ({$container, userInfo}: Record<string, any>)=>{
 
     const $userProfileContainer = $("<div>").addClass(userProfileContainerClass);
     const $userNameDiv = $("<div>").addClass(`flex text-xl font-bold cursor-pointer`).append($("<span>").text(screen_name))
-    $userNameDiv.click(function(){
+    $userNameDiv.click(function () {
         const userUrl = profile_url ? `${weiboBaseUrl}${profile_url}` : (idstr ? `${weiboBaseUrl}/u/${idstr}` : '')
-        if(userUrl){
+        if (userUrl) {
             window.open(userUrl, "_blank")
         }
     })
@@ -84,24 +84,24 @@ const appendUserInfo = ({$container, userInfo}: Record<string, any>)=>{
     $container.append($userInfoContainer)
 }
 
-const appendBlog = ({$container, blogItem, postClass}: Record<string, any>)=>{
+const appendBlog = ({ $container, blogItem, postClass }: Record<string, any>) => {
     const { text, text_raw, picShows, region_name, source, created_at, user, mediaInfoList, title } = blogItem || {}
 
     let $postInside = $('<div>').addClass(postInsideClass);
 
     const titleText = title?.text || '';
-    if(titleText){
+    if (titleText) {
         const $titleDiv = $("<div>").text(titleText).addClass(titleClass);
         $postInside.append($titleDiv)
     }
 
-    const {idstr: user_idstr, screen_name: user_screen_name, profile_url: user_profile_url } = user || {}
-    if(user_idstr && user_screen_name){
-        const userInfoText =  `@${user_screen_name}`
+    const { idstr: user_idstr, screen_name: user_screen_name, profile_url: user_profile_url } = user || {}
+    if (user_idstr && user_screen_name) {
+        const userInfoText = `@${user_screen_name}`
         let $userInfoDiv = $("<div>").addClass(`flex text-base font-bold text-gray-700 hover:text-orange-500 cursor-pointer`).append($("<span>").html(userInfoText))
-        $userInfoDiv.click(function(){
+        $userInfoDiv.click(function () {
             const jumpUrl = user_profile_url ? `${weiboBaseUrl}${user_profile_url}` : (user_idstr ? `${weiboBaseUrl}/u/${user_idstr}` : '')
-            if(jumpUrl){
+            if (jumpUrl) {
                 window.open(`${weiboBaseUrl}/u/${user_idstr}`, "_blank");
             }
         })
@@ -119,21 +119,21 @@ const appendBlog = ({$container, blogItem, postClass}: Record<string, any>)=>{
     $postInside.append($text);
 
     // 图片
-    if(!_.isEmpty(picShows)){
+    if (!_.isEmpty(picShows)) {
         let $imageContainer = $('<div>').addClass(imageContainerClass);
-        _.map(picShows, picItem=>{
+        _.map(picShows, picItem => {
             const srcUrl = `${assetsPath}/image/${picItem.picName}`
             let $image = $('<img>').attr('src', srcUrl);
             $image.addClass(imageClass);
-            $image.click(function() {
+            $image.click(function () {
                 $('#imagePopup img').attr('src', srcUrl);
                 $('#imagePopup').removeClass('hidden').addClass("flex");
-                });
-            
-                $('#imagePopup').click(function() {
+            });
+
+            $('#imagePopup').click(function () {
                 // @ts-ignore
                 $(this).addClass('hidden').removeClass('flex');
-                });
+            });
 
             let $imageBox = $('<div>').addClass(imageBoxClass)
             $imageBox.append($image)
@@ -144,10 +144,10 @@ const appendBlog = ({$container, blogItem, postClass}: Record<string, any>)=>{
     }
 
     // 视频
-    if(!_.isEmpty(mediaInfoList)){
+    if (!_.isEmpty(mediaInfoList)) {
         let $videoContainer = $('<div>').addClass(videoContainerClass);
-        _.map(mediaInfoList, mediaItem=>{
-            const { format, media_id} = mediaItem
+        _.map(mediaInfoList, mediaItem => {
+            const { format, media_id } = mediaItem
             const srcUrl = `${assetsPath}/video/${media_id}.${format}`
             let $video = $('<video>').attr('src', srcUrl);
             $video.attr("controls", true)

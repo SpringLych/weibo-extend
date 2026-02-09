@@ -312,8 +312,8 @@ export const saveWeiboQueue = createAsyncThunk(
             const blogsResp = isMyFav
                 ? await fetchToGetMyFav({ uid: otherUid, pageIndex })
                 : startTimeShortSpan && endTimeShortSpan
-                ? await fetchToSearchProfile({ uid: otherUid, pageIndex, startTimeShortSpan, endTimeShortSpan })
-                : await fetchToGetBlog({ uid: otherUid, pageIndex })
+                  ? await fetchToSearchProfile({ uid: otherUid, pageIndex, startTimeShortSpan, endTimeShortSpan })
+                  : await fetchToGetBlog({ uid: otherUid, pageIndex })
             pageIndex++
             const { list, hasMore, total } = blogsResp?.data || {}
             // 仅保留 mblog_vip_type 为 1 的微博（即仅 VIP 可看）
@@ -343,8 +343,8 @@ export const saveWeiboQueue = createAsyncThunk(
         const attachedName = isMyFav
             ? `${uid}_Favorites`
             : startDate && endDate
-            ? dayjs(startDate).format('YYYYMMDD') + '_' + dayjs(endDate).format('YYYYMMDD')
-            : `total`
+              ? dayjs(startDate).format('YYYYMMDD') + '_' + dayjs(endDate).format('YYYYMMDD')
+              : `total`
         await saveBlogToZip({
             myBlog: onePageList,
             start,

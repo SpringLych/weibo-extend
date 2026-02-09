@@ -2,7 +2,7 @@
 .idea
 testpage
 .vscode
-
+weibo-extend
 # dependencies
 /node_modules
 /.pnp

@@ -1,6 +1,8 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import Datepicker from 'tailwind-datepicker-react'
+import _Datepicker from 'tailwind-datepicker-react'
+const Datepicker = (_Datepicker as any).default || _Datepicker
+
 import { IOptions } from 'tailwind-datepicker-react/types/Options'
 import SvgCalendarIcon from './SvgCalendarIcon'
 import dayjs from 'dayjs'

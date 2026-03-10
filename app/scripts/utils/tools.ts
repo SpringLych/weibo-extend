@@ -81,7 +81,7 @@ export const saveBlogToZip = async ({ myBlog, start, isMyFav, attachedName, each
     const range = `${start}_${end}`
     const userInfo = myBlog?.[0]?.user || {}
     const { screen_name, idstr } = userInfo || {}
-    const zipFileName = _.compact(isMyFav ? [attachedName, range] : [idstr, screen_name, attachedName, range]).join('_')
+    const zipFileName = _.compact(isMyFav ? [attachedName, range] : [attachedName, range, idstr, screen_name]).join('_')
 
     const extensionId = chrome.runtime.id
     const weibSaveFolder = `chrome-extension://${extensionId}/weiboSave`
